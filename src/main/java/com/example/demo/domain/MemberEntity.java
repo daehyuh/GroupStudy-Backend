@@ -7,36 +7,40 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity(name="Member")
 public class MemberEntity {
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "Member_seq")
     @SequenceGenerator(name="Member_seq", sequenceName = "Member_seq", initialValue = 0, allocationSize = 1)
     long id;
-    @Column
+    @Column(name = "name")
     String name;
-    @Column
+    @Column(name = "email")
     String email;
-    @Column
+    @Column(name = "password")
     String password;
+    @Column(name = "activated")
+    Boolean activated;
 
     @CreatedDate
     LocalDateTime created_at;
     @LastModifiedDate
     LocalDateTime updated_at;
 
-    public MemberEntity(String name, String email, String password){
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "User_Authority",
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
-    public MemberEntity() {
-
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.api;
 
+import com.example.demo.domain.MemberEntity;
 import org.springframework.http.HttpStatus;
 
 public record ApiResponseDto<T> (String message, T data) {
@@ -16,7 +17,7 @@ public record ApiResponseDto<T> (String message, T data) {
         return new ApiResponseDto<>(httpStatus.getReasonPhrase(), null);
     }
 
-    public static <T> ApiResponseDto<T> success(HttpStatus httpStatus, T body) {
-        return new ApiResponseDto<>(httpStatus.getReasonPhrase(), body);
+    public static <T> ApiResponseDto<MemberEntity> success(HttpStatus httpStatus, T body) {
+        return (ApiResponseDto<MemberEntity>) new ApiResponseDto<>(httpStatus.getReasonPhrase(), body);
     }
 }
