@@ -1,9 +1,9 @@
 package com.example.demo.config;
 
-import com.example.demo.jwt.JwtSecurityConfig;
-import com.example.demo.jwt.TokenProvider;
-import com.example.demo.jwt.errors.JwtAccessDeniedHandler;
-import com.example.demo.jwt.errors.JwtAuthenticationEntryPoint;
+import com.example.demo.service.jwt.JwtSecurityConfig;
+import com.example.demo.service.jwt.TokenProvider;
+import com.example.demo.service.jwt.errors.JwtAccessDeniedHandler;
+import com.example.demo.service.jwt.errors.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,8 +25,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint   jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler    jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public SecurityConfig(TokenProvider tokenProvider,
                           JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
@@ -69,9 +69,7 @@ public class SecurityConfig {
                                 )
                                 .permitAll()
                                 .anyRequest().authenticated()
-                )
-
-                .apply(new JwtSecurityConfig(tokenProvider));
+                );
 
 
         return httpSecurity.build();
